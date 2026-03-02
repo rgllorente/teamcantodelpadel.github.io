@@ -375,33 +375,37 @@
    Estados de jornada
 ======================= */
 
-/* Jornada vencida */
+/* Jornada vencida - azul muy marcado */
 .badge.j-past {
-  background: rgba(30, 58, 138, 0.25); /* azul oscuro */
-  color: #60a5fa;
-  border-color: rgba(30, 58, 138, 0.6);
-}
-
-/* Jornada próxima */
-.badge.j-upcoming {
-  background: #facc15; /* amarillo fosforito */
-  color: #1a1a1a;
-  border-color: #fde047;
+  background: #0b1d4d;          /* azul oscuro potente */
+  color: #93c5fd;               /* azul claro legible */
+  border: 1px solid #1e40af;    /* azul intenso */
   box-shadow:
-    0 0 6px rgba(250, 204, 21, 0.9),
-    0 0 14px rgba(250, 204, 21, 0.7);
-  animation: pulseGlow 1.4s infinite ease-in-out;
+    inset 0 0 0 1px rgba(255,255,255,0.05),
+    0 0 10px rgba(30,64,175,0.6);
 }
 
-/* Efecto sobresaltado */
+/* Jornada próxima (≤ 7 días) */
+.badge.j-upcoming {
+  background: #fde047;          /* amarillo fosforito */
+  color: #111827;
+  border: 1px solid #facc15;
+  box-shadow:
+    0 0 8px rgba(250, 204, 21, 0.9),
+    0 0 18px rgba(250, 204, 21, 0.8);
+  animation: pulseGlow 1.3s infinite ease-in-out;
+  font-weight: 900;
+}
+
+/* Animación de aviso */
 @keyframes pulseGlow {
   0% {
     transform: scale(1);
     box-shadow: 0 0 6px rgba(250, 204, 21, 0.8);
   }
   50% {
-    transform: scale(1.08);
-    box-shadow: 0 0 18px rgba(250, 204, 21, 1);
+    transform: scale(1.1);
+    box-shadow: 0 0 22px rgba(250, 204, 21, 1);
   }
   100% {
     transform: scale(1);
@@ -656,7 +660,7 @@
 
     if (!dateCell || !badge) return;
 
-    // Formato esperado: DD/MM/YYYY · HH:mm
+    // Formato: DD/MM/YYYY · HH:mm
     const text = dateCell.textContent.trim();
     const [datePart, timePart] = text.split(" · ");
     const [day, month, year] = datePart.split("/").map(Number);
@@ -665,11 +669,18 @@
     const matchDate = new Date(year, month - 1, day, hour, minute);
     const now = new Date();
 
-    if (matchDate < now) {
+    // Diferencia en días
+    const diffMs = matchDate - now;
+    const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+    if (diffMs < 0) {
+      // Jornada pasada
       badge.classList.add("j-past");
-    } else {
+    } else if (diffDays <= 7) {
+      // Jornada en los próximos 7 días
       badge.classList.add("j-upcoming");
     }
+    // Más de 7 días → no se toca (queda como estaba)
   });
 </script>
 
