@@ -379,13 +379,13 @@
 .badge.j-past {
   background: #0b1d4d;          /* azul oscuro potente */
   color: #93c5fd;               /* azul claro legible */
-  border: 1px solid #1e40af;    /* azul intenso */
+  border: 3px solid #1e40af;    /* azul intenso */
   box-shadow:
     inset 0 0 0 1px rgba(255,255,255,0.05),
     0 0 10px rgba(30,64,175,0.6);
 }
 
-/* Jornada próxima (≤ 7 días) */
+/* Jornada próxima (≤ 15 días) */
 .badge.j-upcoming {
   background: #fde047;          /* amarillo fosforito */
   color: #111827;
@@ -677,10 +677,10 @@
       // Jornada pasada
       badge.classList.add("j-past");
     } else if (diffDays <= 15) {
-      // Jornada en los próximos 7 días
+      // Jornada en los próximos 15 días
       badge.classList.add("j-upcoming");
     }
-    // Más de 7 días → no se toca (queda como estaba)
+    // Más de 15 días → no se toca (queda como estaba)
   });
 </script>
 
