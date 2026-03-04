@@ -18,7 +18,7 @@
       <img src="logo.png" class="logo" alt="Logo El Canto del Pádel">
       <div>
         <h1>3ª LAP: EL CANTO DEL PÁDEL</h1>
-        <p class="sub">Liga PADELCYL 2026 · Grupo 3ªE</p>
+        <p class="sub">Liga PADELCYL 2026 · 3ª Grupo E</p>
       </div>
     </div>
   </header>
@@ -27,7 +27,7 @@
 
     <!-- ======= JORNADAS ======= -->
     <section class="card">
-      <h2 class="section-title">📅 Jornadas del equipo</h2>
+      <h2 class="section-title">📅 Jornadas Equipo</h2>
 
       <div class="table-wrap">
         <table class="schedule" aria-label="Calendario de jornadas">
@@ -261,11 +261,8 @@
       </div>
 
       <div class="rank-iframe-wrap">
-        <iframe
-          class="rank-iframe"
-          title="Clasificación oficial"
-          src="https://padelfederacion.es/Paginas/CYL/Ligas_Clasificacion.asp?Liga=27991&Grupo=31090"
-          loading="lazy"
+        <iframe class="rank-iframe" title="Clasificación oficial"
+          src="https://padelfederacion.es/Paginas/CYL/Ligas_Clasificacion.asp?Liga=27991&Grupo=31090" loading="lazy"
           referrerpolicy="no-referrer-when-downgrade">
         </iframe>
       </div>
@@ -273,66 +270,8 @@
 
   </main>
 
-  <!-- ======= SCRIPT ESTADO JORNADAS ======= -->
-  <script>
-    document.querySelectorAll(".schedule tbody tr").forEach(row => {
-      const dateCell = row.children[3];
-      const badge = row.querySelector("td:first-child .badge");
-      if (!dateCell || !badge) return;
-
-      const [datePart, timePart] = dateCell.textContent.trim().split(" · ");
-      const [d, m, y] = datePart.split("/").map(Number);
-      const [h, min] = timePart.split(":").map(Number);
-
-      const matchDate = new Date(y, m - 1, d, h, min);
-      const now = new Date();
-      const diffDays = (matchDate - now) / (1000 * 60 * 60 * 24);
-
-      if (matchDate < now) badge.classList.add("j-past");
-      else if (diffDays <= 15) badge.classList.add("j-upcoming");
-    });
-  </script>
-
-  <!-- ======= SCRIPT ORDENACIÓN ======= -->
-  <script>
-    const getCellValue = (row, idx) => row.children[idx].innerText.trim();
-
-    const parseDate = val => {
-      const [d, t] = val.split(" · ");
-      const [day, month, year] = d.split("/").map(Number);
-      const [h, m] = t.split(":").map(Number);
-      return new Date(year, month - 1, day, h, m);
-    };
-
-    document.querySelectorAll("th.sortable").forEach((th, idx) => {
-      let dir = 1;
-
-      th.addEventListener("click", () => {
-        const tbody = th.closest("table").querySelector("tbody");
-        const rows = [...tbody.querySelectorAll("tr")];
-
-        document.querySelectorAll("th.sortable").forEach(h =>
-          h.classList.remove("asc", "desc")
-        );
-
-        dir *= -1;
-        th.classList.add(dir === 1 ? "asc" : "desc");
-
-        const type = th.dataset.type;
-
-        rows.sort((a, b) => {
-          let A = getCellValue(a, idx);
-          let B = getCellValue(b, idx);
-
-          if (type === "number") return dir * (A - B);
-          if (type === "date") return dir * (parseDate(A) - parseDate(B));
-          return dir * A.localeCompare(B, "es", { sensitivity: "base" });
-        });
-
-        rows.forEach(r => tbody.appendChild(r));
-      });
-    });
-  </script>
-
+  <!-- ======= SCRIPTs ======= -->
+  <script src="main.js"></script>
 </body>
+
 </html>
