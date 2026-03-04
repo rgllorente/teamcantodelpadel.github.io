@@ -4,11 +4,11 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll(".schedule tbody tr").forEach(row => {
-    const dateCell = row.children[3];
+    const dateCell = row.children[1];
     const badge = row.querySelector("td:first-child .badge");
     if (!dateCell || !badge) return;
 
-    const [datePart, timePart] = dateCell.textContent.trim().split(" · ");
+    const [datePart, timePart] = dateCell.textContent.trim().split("⌚");
     if (!datePart || !timePart) return;
 
     const [d, m, y] = datePart.split("/").map(Number);
@@ -37,41 +37,24 @@ document.addEventListener("DOMContentLoaded", () => {
     row.children[idx].innerText.trim();
 
   const parseDate = value => {
-    const [datePart, timePart] = value.split(" · ");
+    const [datePart, timePart] = value.split("⌚");
     const [d, m, y] = datePart.split("/").map(Number);
     const [h, min] = timePart.split(":").map(Number);
     return new Date(y, m - 1, d, h, min);
   };
 
-  const headers = document.querySelectorAll("th.sortable");
-  let activeHeader = null;
-
-  headers.forEach((th, index) => {
+  document.querySelectorAll("th.sortable").forEach((th, index) => {
+    let direction = -1;
 
     th.addEventListener("click", () => {
-
-      /* ── Reset otras columnas ───────────────── */
-      if (activeHeader && activeHeader !== th) {
-        activeHeader.classList.remove("asc", "desc");
-      }
-
-      /* ── Dirección ─────────────────────────── */
-      let direction = 1;
-
-      if (th === activeHeader && th.classList.contains("asc")) {
-        direction = -1;
-      }
-
-      /* ── Marcar columna activa ─────────────── */
-      th.classList.toggle("asc", direction === 1);
-      th.classList.toggle("desc", direction === -1);
-
-      activeHeader = th;
-
-      /* ── Ordenar filas ─────────────────────── */
       const table = th.closest("table");
       const tbody = table.querySelector("tbody");
       const rows = Array.from(tbody.querySelectorAll("tr"));
+
+      direction *= -1;
+      th.classList.toggle("asc", direction === 1);
+      th.classList.toggle("desc", direction === -1);
+
       const type = th.dataset.type;
 
       rows.sort((a, b) => {
