@@ -75,6 +75,25 @@ header h1 {
   font-size: clamp(1.3rem, 2.8vw, 2rem);
 }
 
+header h1.with-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px; /* espacio entre icono y texto */
+  font-weight: 800;
+}
+
+header h1.with-icon::before {
+  content: "";
+  display: inline-block;
+  width: 28px;  /* tamaño del icono */
+  height: 28px;
+  background-image: url('logo_padel.png'); /* ruta local */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 header p.sub {
   margin: .4rem 0 0;
   opacity: .95;
