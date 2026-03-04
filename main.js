@@ -43,18 +43,35 @@ document.addEventListener("DOMContentLoaded", () => {
     return new Date(y, m - 1, d, h, min);
   };
 
-  document.querySelectorAll("th.sortable").forEach((th, index) => {
-    let direction = 1;
+  const headers = document.querySelectorAll("th.sortable");
+  let activeHeader = null;
+
+  headers.forEach((th, index) => {
 
     th.addEventListener("click", () => {
-      const table = th.closest("table");
-      const tbody = table.querySelector("tbody");
-      const rows = Array.from(tbody.querySelectorAll("tr"));
 
-      direction *= -1;
+      /* ── Reset otras columnas ───────────────── */
+      if (activeHeader && activeHeader !== th) {
+        activeHeader.classList.remove("asc", "desc");
+      }
+
+      /* ── Dirección ─────────────────────────── */
+      let direction = 1;
+
+      if (th === activeHeader && th.classList.contains("asc")) {
+        direction = -1;
+      }
+
+      /* ── Marcar columna activa ─────────────── */
       th.classList.toggle("asc", direction === 1);
       th.classList.toggle("desc", direction === -1);
 
+      activeHeader = th;
+
+      /* ── Ordenar filas ─────────────────────── */
+      const table = th.closest("table");
+      const tbody = table.querySelector("tbody");
+      const rows = Array.from(tbody.querySelectorAll("tr"));
       const type = th.dataset.type;
 
       rows.sort((a, b) => {
