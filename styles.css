@@ -235,3 +235,64 @@ th.sortable.desc::after { content: " ↓"; opacity: 1; }
   height: 100%;
   border: 0;
 }
+
+/* =======================
+   Mobile table handling
+======================= */
+@media (max-width: 768px) {
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+  }
+
+  .table-wrap::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .table-wrap::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.25);
+    border-radius: 3px;
+  }
+
+  table.schedule {
+    min-width: 720px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .schedule thead th {
+    white-space: nowrap;
+    line-height: 1;
+    padding: 6px 10px 8px;
+  }
+
+  th.sortable::after {
+    display: inline-block;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+}
+
+@media (max-width: 768px) {
+
+  th.sortable {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    min-height: 44px; /* Apple / Google touch guideline */
+  }
+}
+
+@media (max-width: 768px) {
+
+  .schedule td {
+    font-size: .9rem;
+    padding: 10px 12px;
+  }
+
+  .row-card {
+    border-radius: 10px;
+  }
+}
